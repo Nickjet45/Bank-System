@@ -137,8 +137,8 @@ int main(){
     BankSystem *system; //Creation of pointer to allow dynamic array of the system
 
     //Opens the input and output stream
-    openInput(inStream);
-    openOutput(outStream);
+   /* openInput(inStream);
+    openOutput(outStream); */
 
     //Reads in the number of users from the input file to determine if the program needs to fill objects before continuing
     inStream >> numOfusers;
