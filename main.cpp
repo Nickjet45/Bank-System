@@ -10,7 +10,8 @@ class BankSystem{
         void depositMoney(int amountToDeposit);
         void withdrawMoney(int amountToWithdraw);
         void import(std::ifstream& inStream);
-        void setStatus(int PIN, std::string userName);
+        bool setStatus(int PIN, std::string userName);
+        bool isUser(int PIN, std::string userName);
     
     private:
         std::string userName;
@@ -63,11 +64,26 @@ void BankSystem::import(std::ifstream& inStream){
     }
 }
 
-void BankSystem::setStatus(int enteredPIN, std::string enteredUserName){
+bool BankSystem::setStatus(int enteredPIN, std::string enteredUserName){
     if((enteredPIN == PIN) && (enteredUserName == userName)){
         isDeleted = true;
 
         std::cout << "Your account has been set to be deleted, sorry to see you go \n";
+
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+//Adjusted system to verify that the user is within the system, which will make it easier to prompt the user
+bool BankSystem:: isUser(int enteredPIN, std::string enteredName){
+    if((enteredPIN == PIN) && (enteredName == userName)){
+        return true;
+    }
+    else{
+        return false;
     }
 }
 
@@ -76,9 +92,10 @@ int menu(){
 
     std::cout << "Please enter your choice: \n"
               << "1- Create Account \n"
-              << "2- Deposit Money \n"
-              << "3- Withdraw Money \n"
-              << "4- Delete Account \n";
+              << "2 - Login to Account \n"
+              << "3- Deposit Money \n"
+              << "4- Withdraw Money \n"
+              << "5- Delete Account \n";
               std::cin >> userChoice;
 
     return userChoice;
@@ -113,8 +130,9 @@ int main(){
     std::ifstream inStream;
     std::ofstream outStream;
     std::string userName;
-    int numOfusers, PIN, userChoice;
+    int numOfusers, PIN, userChoice, userNumber = -1; //Sets the user number to -1 to see if the user has logined yet
     char rerun = 'Y';
+    bool hasDeleted = false;
 
     BankSystem *system; //Creation of pointer to allow dynamic array of the system
 
@@ -142,11 +160,38 @@ int main(){
                 numOfusers++;
                 break;
             case 2:
+                //Prompts the user for their PIN and user name
+
+                std::cin.ignore();
+
+                std::cout << "What is your user name? ";
+                getline(std::cin, userName);
+
+                std::cout << "What is your PIN? ";
+                std::cin >> PIN;
+
+                //Loops over the size of the array, and if the user's PIN and userName is found to match, their number is the index of array at i
+                for(int i = 0; i < sizeOfArray; i++){
+                    if(system[i].isUser(PIN, userName)){
+                        userNumber = i;
+                        std::cout << "Successfully logined to the system, please continue \n";
+                        break;
+                    }
+                }
+
                 break;
             case 3:
                 break;
-            case 4: //If the user chooses to delete their accoutn
-                //Prompt the user for their name
+
+            case 4:
+                break;
+            case 5: //If the user chooses to delete their accoutn
+                if(userNumber == -1){
+                    std::cout << "Please login first \n";
+                    break;
+                }
+
+                //Asks the user for their name
                 std::cin.ignore();
                 std::cout << "Please enter your name: ";
                 getline(std::cin, userName);
@@ -154,13 +199,11 @@ int main(){
                 //Prompt the user for their pin
                 std::cout << "Please enter your special PIN code: ";
                 std::cin >> PIN;
-                //Loop over all objects with the array of objects
-                for(int i = 0; i < sizeOfArray; i++){
-                    //If the user's name and PIN are equal to one in the array, set it's status to be deleted
-                    system[i].setStatus(PIN, userName);
+                //Deletes the account the user logined to earlier
+                system[userNumber].setStatus(PIN, userName);
 
-                }
                 break;
+
             default:
                 std::cout << "Invalid user choice, exiting the program";
                 exit(1);
