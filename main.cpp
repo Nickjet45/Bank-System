@@ -12,6 +12,7 @@ class BankSystem{
         void import(std::ifstream& inStream);
         bool setStatus(int PIN, std::string userName);
         bool isUser(int PIN, std::string userName);
+        double getBalance();
     
     private:
         std::string userName;
@@ -39,12 +40,27 @@ void BankSystem::getName(){
 
 //Increases the object's currentBalance based off of the number passed through
 void BankSystem::depositMoney(int amountToDeposit){
-    currentBalance += amountToDeposit;
+    if(amountToDeposit < 0){
+        std::cout << "You have entered an invalid amount";
+    }
+    else{
+        currentBalance += amountToDeposit;
+        std::cout << "Sucessfully deposited into your account";
+    }
+
+
 }
 
 //Decreases the object's currentBalance based off of the amount passed into the function
 void BankSystem::withdrawMoney(int amountToWithdraw){
-    currentBalance -= amountToWithdraw;
+
+    if((currentBalance - amountToWithdraw) < 0){
+        std::cout << "The amount you have entered would put your balance in the negative, please enter a valid amount \n";
+    }
+    else{
+        currentBalance -= amountToWithdraw;
+        std::cout << "You have successfully withdrawn: $" << amountToWithdraw << std::endl;
+    }
 }
 
 void BankSystem::import(std::ifstream& inStream){
@@ -87,12 +103,16 @@ bool BankSystem:: isUser(int enteredPIN, std::string enteredName){
     }
 }
 
+double BankSystem:: getBalance(){
+    return currentBalance;
+}
+
 int menu(){
     int userChoice = 0;
 
     std::cout << "Please enter your choice: \n"
               << "1- Create Account \n"
-              << "2 - Login to Account \n"
+              << "2- Login to Account \n"
               << "3- Deposit Money \n"
               << "4- Withdraw Money \n"
               << "5- Delete Account \n";
@@ -126,6 +146,7 @@ void openOutput(std::ofstream& outStream){
 }
 
 
+
 int main(){
     std::ifstream inStream;
     std::ofstream outStream;
@@ -137,8 +158,8 @@ int main(){
     BankSystem *system; //Creation of pointer to allow dynamic array of the system
 
     //Opens the input and output stream
-   /* openInput(inStream);
-    openOutput(outStream); */
+    openInput(inStream);
+    openOutput(outStream);
 
     //Reads in the number of users from the input file to determine if the program needs to fill objects before continuing
     inStream >> numOfusers;
@@ -181,15 +202,34 @@ int main(){
 
                 break;
             case 3:
-                double amount;
-                std::cout << "How much would you like to deposit into the system? $";
-                std::cin >> amount;
+                if(userNumber == -1){ //If user has yet to login, tell them to go login
+                    std::cout << "Please login first \n";
+                    break;
+                }
+
+                //Prompt for the amount they wish to deposit into their account
+                double amountD;
+                std::cout << "How much would you like to deposit into your account? $";
+                std::cin >> amountD;
                 
-                system[userNumber].depositMoney(amount);
+                system[userNumber].depositMoney(amountD);
                 break;
 
             case 4:
+                if(userNumber == -1){
+                    std::cout << "Please login first \n";
+                    break;
+                }
+
+                //Prompt for amount the user wishes to withdraw from their account, after telling them how much they got
+                std::cout << "Your current account balance is: $" << system[userNumber].getBalance() << std::endl;
+                double amountW;
+                std::cout << "How much would you like to withdraw from your account? $";
+                std::cin >> amountW;
+                
+                system[userNumber].withdrawMoney(amountW);
                 break;
+
             case 5: //If the user chooses to delete their accoutn
                 if(userNumber == -1){
                     std::cout << "Please login first \n";
