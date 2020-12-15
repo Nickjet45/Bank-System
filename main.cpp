@@ -181,6 +181,11 @@ int main(){
 
                 break;
             case 3:
+                double amount;
+                std::cout << "How much would you like to deposit into the system? $";
+                std::cin >> amount;
+                
+                system[userNumber].depositMoney(amount);
                 break;
 
             case 4:
