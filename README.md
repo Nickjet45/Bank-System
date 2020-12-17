@@ -6,5 +6,10 @@ Program's Purpose: Concept Bank System
     
     Function: Allows the user to create and delete accounts, along with withdraw money from an account, and deposit into the account
     
-    Status: WIP, import of data from binary file needs to still be implemented
+    Status: WIP
+    
+    Features to Implement:
+        1.) Import of data from binary file
+        
+        2.) Notice when the user login has failed 
 
