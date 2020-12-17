@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <iomanip>
 
 class BankSystem{
     public:
@@ -16,8 +17,8 @@ class BankSystem{
         void exportUser(std::ofstream& inStream);
     
     private:
-        std::string userName;
-        long int currentBalance = 0; //Initalizes at zero, long int incase they wish to store a large amount of money
+        std::string userName, firstName, lastName;
+        long double currentBalance = 0; //Initalizes at zero, long double incase they wish to store a large amount of money
         bool isDeleted = false; //Checks to see if the user has wished to delete their account
         int PIN;
 };
@@ -29,10 +30,14 @@ std::string BankSystem::outputName(){
 
 //Retrieves the username from standard input and stores it into the string userName
 void BankSystem::getName(){
-
     std::cin.ignore();
     std::cout << "What is your name? ";
-    getline(std::cin, userName);
+
+    //Stores the user's firstName and lastName into their respective variables
+    std::cin >> firstName >> lastName;
+
+    //The username is the combination of the first name and their last name, with a space separating them
+   userName = firstName + " " + lastName;
 
     //Prompts the user for their special PIN
     std::cout << "Please enter what you wish for your special PIN to be: ";
@@ -71,7 +76,6 @@ void BankSystem::import(std::ifstream& inStream){
     inStream >> firstName >> lastName >> PIN >> isDeleted >> currentBalance;
 
     //Sets the user name to be equal to the first name + the last name, with a space inbetween
-
     userName = firstName + " " + lastName;
 }
 
@@ -82,8 +86,10 @@ void BankSystem::exportUser(std::ofstream& outStream){
         return;
     }
     else{
+
         //Else store the information into the output file, in this order
-        outStream << userName << PIN << isDeleted << currentBalance << std::endl;
+        outStream << firstName << " " << lastName << " ";
+        outStream << PIN << " "<< currentBalance << std::endl;
     }
 }
 
@@ -146,7 +152,7 @@ void openInput(std::ifstream& inStream){
 //Opens the output file(same as input) and sets the pointer to be towards the end of the program
 void openOutput(std::ofstream& outStream){
     //Opens the output file in appendex mode, as to not clear the field by mistake
-    outStream.open("Bankbackup.txt", std::ios::app);
+    outStream.open("Bankbackup.txt");
 
     if(outStream.fail()){
         std::cout << "Failed to generate backup file, exiting program";
@@ -156,8 +162,6 @@ void openOutput(std::ofstream& outStream){
     long size = outStream.tellp();
     outStream.seekp(size); */
 }
-
-
 
 int main(){
     std::ifstream inStream;
@@ -169,9 +173,8 @@ int main(){
 
     BankSystem *system; //Creation of pointer to allow dynamic array of the system
 
-    //Opens the input and output stream
+    //Opens the input  stream
     openInput(inStream);
-    openOutput(outStream);
 
     //Reads in the number of users from the input file to determine if the program needs to fill objects before continuing
     inStream >> numOfusers;
@@ -265,8 +268,13 @@ int main(){
                 //Prompt the user for their pin
                 std::cout << "Please enter your special PIN code: ";
                 std::cin >> PIN;
+
                 //Deletes the account the user logined to earlier
                 system[userNumber].setStatus(PIN, userName);
+
+                //Lowers the number of users in the system by 1, due to an account being deleted
+
+                numOfusers--;
 
                 break;
             
@@ -275,8 +283,13 @@ int main(){
                 std::cout << "Thank you for using our system, good bye \n";
 
                 std::cout << "Storing user information... \n";
+
+                //Opens the output file, to prepare the program to write to it
+
+               /* openOutput(outStream);
+
                 //Output the number of users currently in the system to the output file
-             /*   outStream << numOfusers << std::endl;
+                outStream << numOfusers << std::endl;
 
                 //Loop over the number of users and then output all of their information if they have not been set to be deleted
 
