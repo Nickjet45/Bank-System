@@ -89,6 +89,9 @@ bool BankSystem::setStatus(int enteredPIN, std::string enteredUserName){
         return true;
     }
     else{
+
+        std::cout << "Either the PIN or username you have entered is incorrect."
+                  << "Therefore, we are unable to delete your account \n";
         return false;
     }
 }
@@ -191,7 +194,8 @@ int main(){
                 std::cout << "What is your PIN? ";
                 std::cin >> PIN;
 
-                //Loops over the size of the array, and if the user's PIN and userName is found to match, their number is the index of array at i
+                //Loops over the size of the array, and if the user's PIN and userName is found to match, 
+                //their number is the index of array at i
                 for(int i = 0; i < sizeOfArray; i++){
                     if(system[i].isUser(PIN, userName)){
                         userNumber = i;
@@ -221,7 +225,7 @@ int main(){
                     break;
                 }
 
-                //Prompt for amount the user wishes to withdraw from their account, after telling them how much they got
+                //Prompt for amount the user wishes to withdraw from their account, after telling them how much they have in their account
                 std::cout << "Your current account balance is: $" << system[userNumber].getBalance() << std::endl;
                 double amountW;
                 std::cout << "How much would you like to withdraw from your account? $";
@@ -230,7 +234,7 @@ int main(){
                 system[userNumber].withdrawMoney(amountW);
                 break;
 
-            case 5: //If the user chooses to delete their accoutn
+            case 5: //If the user chooses to delete their account
                 if(userNumber == -1){
                     std::cout << "Please login first \n";
                     break;
