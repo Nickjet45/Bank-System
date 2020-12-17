@@ -13,6 +13,7 @@ class BankSystem{
         bool setStatus(int PIN, std::string userName);
         bool isUser(int PIN, std::string userName);
         double getBalance();
+        void exportUser(std::ofstream& inStream);
     
     private:
         std::string userName;
@@ -41,11 +42,11 @@ void BankSystem::getName(){
 //Increases the object's currentBalance based off of the number passed through
 void BankSystem::depositMoney(int amountToDeposit){
     if(amountToDeposit < 0){
-        std::cout << "You have entered an invalid amount";
+        std::cout << "You have entered an invalid amount \n";
     }
     else{
         currentBalance += amountToDeposit;
-        std::cout << "Sucessfully deposited into your account";
+        std::cout << "Sucessfully deposited into your account \n";
     }
 
 
@@ -64,19 +65,25 @@ void BankSystem::withdrawMoney(int amountToWithdraw){
 }
 
 void BankSystem::import(std::ifstream& inStream){
-    inStream >> isDeleted;
+    std::string firstName, lastName;
 
+    //Imports the user's information
+    inStream >> firstName >> lastName >> PIN >> isDeleted >> currentBalance;
+
+    //Sets the user name to be equal to the first name + the last name, with a space inbetween
+
+    userName = firstName + " " + lastName;
+}
+
+void BankSystem::exportUser(std::ofstream& outStream){
+
+    //If the user has set to be deleted ,do not store their information into the output file
     if(isDeleted){
-        std::string null;
-        inStream >> null >> null >> null;
+        return;
     }
     else{
-        std::string firstName, lastName;
-        inStream >> firstName >> lastName;
-
-        userName = firstName + " " + lastName;
-
-        inStream >> currentBalance >> PIN;
+        //Else store the information into the output file, in this order
+        outStream << userName << PIN << isDeleted << currentBalance << std::endl;
     }
 }
 
@@ -118,7 +125,8 @@ int menu(){
               << "2- Login to Account \n"
               << "3- Deposit Money \n"
               << "4- Withdraw Money \n"
-              << "5- Delete Account \n";
+              << "5- Delete Account \n"
+              << "6- Exit Program \n";
               std::cin >> userChoice;
 
     return userChoice;
@@ -137,15 +145,16 @@ void openInput(std::ifstream& inStream){
 
 //Opens the output file(same as input) and sets the pointer to be towards the end of the program
 void openOutput(std::ofstream& outStream){
-    outStream.open("Bankbackup.txt", std::ofstream::app);
+    //Opens the output file in appendex mode, as to not clear the field by mistake
+    outStream.open("Bankbackup.txt", std::ios::app);
 
     if(outStream.fail()){
         std::cout << "Failed to generate backup file, exiting program";
         exit(1);
     }
-    outStream.seekp(0, outStream.end);
+  /*  outStream.seekp(0, outStream.end);
     long size = outStream.tellp();
-    outStream.seekp(size);
+    outStream.seekp(size); */
 }
 
 
@@ -176,7 +185,8 @@ int main(){
     }
 
     //After the program has imported the nessecary users, ask what the user would like to do
-    while(toupper(rerun) != 'N'){
+    //While the user has not chosen to exit the program
+    while(true){
         userChoice = menu();
         switch(userChoice){
             case 1:
@@ -201,6 +211,13 @@ int main(){
                         userNumber = i;
                         std::cout << "Successfully logined to the system, please continue \n";
                         break;
+                    }
+
+                    //If the program has looped over the entire size of the array, and the program has been unable to successfully log the user in
+                    //Then the user has entered an invalid credential and should be notified
+
+                    if(i==(sizeOfArray -1)){
+                        std::cout << "You have entered an invalid user name or PIN code, please try again \n";
                     }
                 }
 
@@ -252,14 +269,29 @@ int main(){
                 system[userNumber].setStatus(PIN, userName);
 
                 break;
+            
+            case 6: //If the user chooses to exit the program
+                //Send a good bye message, export data to binary file, delete all pointers, and then exit the program
+                std::cout << "Thank you for using our system, good bye \n";
 
+                std::cout << "Storing user information... \n";
+                //Output the number of users currently in the system to the output file
+             /*   outStream << numOfusers << std::endl;
+
+                //Loop over the number of users and then output all of their information if they have not been set to be deleted
+
+                for(int i = 0; i < numOfusers; i++){
+                    system[i].exportUser(outStream);
+                } */
+
+                delete system;
+
+                exit(1);
             default:
                 std::cout << "Invalid user choice, exiting the program";
                 exit(1);
         }
 
-        std::cout << "Would you like to rerun the program? [Y/N]";
-        std:: cin >> rerun;
     }
 
 
