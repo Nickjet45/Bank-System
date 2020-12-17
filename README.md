@@ -9,7 +9,9 @@ Program's Purpose: Concept Bank System
     Status: WIP
     
     Features to Implement:
-        1.) Import of data from binary file
+        1.) Importation of data from binary file
+        
+        2.) Storage of data into binary file
         
         2.) Notice when the user login has failed 
 
