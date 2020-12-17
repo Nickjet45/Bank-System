@@ -13,5 +13,4 @@ Program's Purpose: Concept Bank System
         
         2.) Storage of data into binary file
         
-        2.) Notice when the user login has failed 
 
