@@ -46,9 +46,8 @@ void BankSystem::getName(){
 
 //Increases the object's currentBalance based off of the number passed through
 void BankSystem::depositMoney(int amountToDeposit){
-    if(amountToDeposit < 0){
+    if(amountToDeposit < 0)
         std::cout << "You have entered an invalid amount \n";
-    }
     else{
         currentBalance += amountToDeposit;
         std::cout << "Sucessfully deposited into your account \n";
@@ -60,9 +59,8 @@ void BankSystem::depositMoney(int amountToDeposit){
 //Decreases the object's currentBalance based off of the amount passed into the function
 void BankSystem::withdrawMoney(int amountToWithdraw){
 
-    if((currentBalance - amountToWithdraw) < 0){
+    if((currentBalance - amountToWithdraw) < 0)
         std::cout << "The amount you have entered would put your balance in the negative, please enter a valid amount \n";
-    }
     else{
         currentBalance -= amountToWithdraw;
         std::cout << "You have successfully withdrawn: $" << amountToWithdraw << std::endl;
@@ -82,9 +80,7 @@ void BankSystem::import(std::ifstream& inStream){
 void BankSystem::exportUser(std::ofstream& outStream){
 
     //If the user has set to be deleted ,do not store their information into the output file
-    if(isDeleted){
-        return;
-    }
+    if(isDeleted) return;
     else{
 
         //Else store the information into the output file, in this order
@@ -94,6 +90,8 @@ void BankSystem::exportUser(std::ofstream& outStream){
 }
 
 bool BankSystem::setStatus(int enteredPIN, std::string enteredUserName){
+    //If the entered PIN and username is correct, set the user account to be deleted
+    //Else tell the user they have entered an invalid credential
     if((enteredPIN == PIN) && (enteredUserName == userName)){
         isDeleted = true;
 
@@ -111,12 +109,10 @@ bool BankSystem::setStatus(int enteredPIN, std::string enteredUserName){
 
 //Adjusted system to verify that the user is within the system, which will make it easier to prompt the user
 bool BankSystem:: isUser(int enteredPIN, std::string enteredName){
-    if((enteredPIN == PIN) && (enteredName == userName)){
-        return true;
-    }
-    else{
-        return false;
-    }
+    //If the entered PIN and username matches the current user being indexed, the user has successfully logined
+    //Else they have yet to login
+    if((enteredPIN == PIN) && (enteredName == userName)) return true;
+    else return false;
 }
 
 double BankSystem:: getBalance(){
@@ -193,9 +189,10 @@ int main(){
         userChoice = menu();
         switch(userChoice){
             case 1:
-                system[numOfusers + 1].getName();
-                numOfusers++;
-                break;
+                //Access the array with the index of number of users, as the array will be empty at number of users
+                //Since an array starts at 0
+                system[numOfusers].getName();
+
             case 2:
                 //Prompts the user for their PIN and user name
 
@@ -219,9 +216,8 @@ int main(){
                     //If the program has looped over the entire size of the array, and the program has been unable to successfully log the user in
                     //Then the user has entered an invalid credential and should be notified
 
-                    if(i==(sizeOfArray -1)){
+                    if(i==(sizeOfArray -1))
                         std::cout << "You have entered an invalid user name or PIN code, please try again \n";
-                    }
                 }
 
                 break;
@@ -282,11 +278,11 @@ int main(){
                 //Send a good bye message, export data to binary file, delete all pointers, and then exit the program
                 std::cout << "Thank you for using our system, good bye \n";
 
-                std::cout << "Storing user information... \n";
+              /*  std::cout << "Storing user information... \n";
 
                 //Opens the output file, to prepare the program to write to it
 
-               /* openOutput(outStream);
+                openOutput(outStream);
 
                 //Output the number of users currently in the system to the output file
                 outStream << numOfusers << std::endl;
