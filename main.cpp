@@ -71,7 +71,7 @@ void BankSystem::import(std::ifstream& inStream){
     std::string firstName, lastName;
 
     //Imports the user's information
-    inStream >> firstName >> lastName >> PIN >> isDeleted >> currentBalance;
+    inStream >> firstName >> lastName >> PIN >> currentBalance;
 
     //Sets the user name to be equal to the first name + the last name, with a space inbetween
     userName = firstName + " " + lastName;
@@ -84,7 +84,7 @@ void BankSystem::exportUser(std::ofstream& outStream){
     else{
 
         //Else store the information into the output file, in this order
-        outStream << firstName << " " << lastName << " ";
+        outStream << firstName << " " << lastName << std::endl;
         outStream << PIN << " "<< currentBalance << std::endl;
     }
 }
@@ -193,6 +193,9 @@ int main(){
                 //Since an array starts at 0
                 system[numOfusers].getName();
 
+                numOfusers++;
+                break;
+
             case 2:
                 //Prompts the user for their PIN and user name
 
@@ -278,7 +281,7 @@ int main(){
                 //Send a good bye message, export data to binary file, delete all pointers, and then exit the program
                 std::cout << "Thank you for using our system, good bye \n";
 
-              /*  std::cout << "Storing user information... \n";
+                std::cout << "Storing user information... \n";
 
                 //Opens the output file, to prepare the program to write to it
 
@@ -287,11 +290,12 @@ int main(){
                 //Output the number of users currently in the system to the output file
                 outStream << numOfusers << std::endl;
 
+
                 //Loop over the number of users and then output all of their information if they have not been set to be deleted
 
                 for(int i = 0; i < numOfusers; i++){
                     system[i].exportUser(outStream);
-                } */
+                } 
 
                 delete system;
 
