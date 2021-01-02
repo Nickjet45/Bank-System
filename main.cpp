@@ -37,7 +37,7 @@ void BankSystem::getName(){
     std::cin >> firstName >> lastName;
 
     //The username is the combination of the first name and their last name, with a space separating them
-   userName = firstName + " " + lastName;
+    userName = firstName + " " + lastName;
 
     //Prompts the user for their special PIN
     std::cout << "Please enter what you wish for your special PIN to be: ";
