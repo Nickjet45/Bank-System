@@ -254,10 +254,6 @@ int main(){
                 break;
 
             case 5: //If the user chooses to delete their account
-                if(userNumber == -1){
-                    std::cout << "Please login first \n";
-                    break;
-                }
 
                 //Asks the user for their name
                 std::cin.ignore();
