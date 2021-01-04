@@ -302,6 +302,9 @@ int main(){
                 exit(1);
             default:
                 std::cout << "Invalid user choice, exiting the program";
+
+                delete system;
+                
                 exit(1);
         }
 
