@@ -147,7 +147,7 @@ void openInput(std::ifstream& inStream){
 
 //Opens the output file(same as input) and sets the pointer to be towards the end of the program
 void openOutput(std::ofstream& outStream){
-    //Opens the output file in appendex mode, as to not clear the field by mistake
+    //Opens the output file
     outStream.open("Bankbackup.txt");
 
     if(outStream.fail()){
