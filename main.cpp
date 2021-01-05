@@ -58,12 +58,21 @@ void BankSystem::depositMoney(int amountToDeposit){
 
 //Decreases the object's currentBalance based off of the amount passed into the function
 void BankSystem::withdrawMoney(int amountToWithdraw){
+    int withdrawAmount = amountToWithdraw;
 
-    if((currentBalance - amountToWithdraw) < 0)
-        std::cout << "The amount you have entered would put your balance in the negative, please enter a valid amount \n";
-    else{
-        currentBalance -= amountToWithdraw;
-        std::cout << "You have successfully withdrawn: $" << amountToWithdraw << std::endl;
+    //While the user has yet to entered an invalid amount, loop over until they enter a valid amount
+    while(true){
+        if((currentBalance - withdrawAmount) < 0){
+            std::cout << "The amount you have entered would put your balance in the negative, please enter a valid amount \n";
+            std::cout << "How much would you like to withdraw? ";
+            std::cin >> withdrawAmount;
+        }
+        //Once a valid amount has been entered, subtract it from their current balance and log a message to console, then break the loop
+        else{
+            currentBalance -= withdrawAmount;
+            std::cout << "You have successfully withdrawn: $" << withdrawAmount << std::endl;
+            break;
+        }
     }
 }
 
