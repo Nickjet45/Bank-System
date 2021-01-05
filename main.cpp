@@ -68,7 +68,6 @@ void BankSystem::withdrawMoney(int amountToWithdraw){
 }
 
 void BankSystem::import(std::ifstream& inStream){
-    std::string firstName, lastName;
 
     //Imports the user's information
     inStream >> firstName >> lastName >> PIN >> currentBalance;
