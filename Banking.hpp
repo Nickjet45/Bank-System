@@ -21,6 +21,9 @@ class BankSystem{
         long double currentBalance = 0; //Initalizes at zero, long double incase they wish to store a large amount of money
         bool isDeleted = false; //Checks to see if the user has wished to delete their account
         int PIN;
+        std::string RoutingNumber;
+        int AccountNumber;
+        void generateBankInformation(); //Generates the user's Routing number along with their Account Number
 };
 
 #endif
