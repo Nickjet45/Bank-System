@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstdlib>
 
 //Returns the username of the object
 std::string BankSystem::outputName(){
@@ -22,6 +23,7 @@ void BankSystem::getName(){
     //Prompts the user for their special PIN
     std::cout << "Please enter what you wish for your special PIN to be: ";
     std::cin >> PIN;
+
 }
 
 //Increases the object's currentBalance based off of the number passed through

@@ -39,9 +39,6 @@ void openOutput(std::ofstream& outStream){
         std::cout << "Failed to generate backup file, exiting program";
         exit(1);
     }
-  /*  outStream.seekp(0, outStream.end);
-    long size = outStream.tellp();
-    outStream.seekp(size); */
 }
 
 int main(){
