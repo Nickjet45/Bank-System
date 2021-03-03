@@ -45,7 +45,7 @@ int main(){
     std::ifstream inStream;
     std::ofstream outStream;
     std::string userName;
-    int numOfusers, PIN, userChoice, userNumber = -1; //Sets the user number to -1 to see if the user has logined yet
+    int numOfusers=0, PIN, userChoice, userNumber = -1; //Sets the user number to -1 to see if the user has logined yet
     char rerun = 'Y';
     bool hasDeleted = false;
 
@@ -175,13 +175,13 @@ int main(){
                     system[i].exportUser(outStream);
                 } 
 
-                delete system;
+                delete[] system;
 
                 exit(1);
             default:
                 std::cout << "Invalid user choice, exiting the program";
 
-                delete system;
+                delete[] system;
                 
                 exit(1);
         }
