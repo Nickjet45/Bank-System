@@ -2,7 +2,7 @@
 #include <string>
 #include <fstream>
 #include <iomanip>
-#include "Banking.cpp"
+#include "Banking.hpp"
 
 int menu(){
     int userChoice = 0;
